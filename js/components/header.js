@@ -52,7 +52,7 @@ class Header {
         
         this.headerNav = document.createElement('div')
         this.headerNav.classList.add('header-nav')
-        this.registerBtn = new SubButton('ti-check', 'Register', )
+        this.registerBtn = new SubButton('ti-check', 'Register', this.HomePage.changeScreen(this.registerPage))
         this.loginBtn = new SubButton('ti-user','Login')
         this.discount = new SubButton('ti-arrow-right', 'Discount')
 
