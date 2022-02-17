@@ -390,9 +390,12 @@ html{
     display: flex;
     justify-content: center;
     overflow: scroll;
+    flex-wrap: wrap;
+    max-width: 1500px;
 }
 
 .products-sections{
+    position: relative;
     border: 2px solid rgb(209, 200, 200);
     margin: 14px;
     width: 238px;
@@ -412,6 +415,9 @@ html{
 }
 
 .price-offical{
+    position: absolute;
+    top: 297px;
+    left: 24px;
     font-size: 30px;
     color: #d7202c;;
 }
@@ -1010,3 +1016,7 @@ th{
     color: red;
   }
   
+.containerCart{
+    margin: 195px;
+    text-align: center;
+}

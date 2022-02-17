@@ -84,6 +84,7 @@ function createProduct(fullname, price, urlImg) {
       _noti.error(errorCode, errorMessage);
     });
 
+  }
   function getProducts() {
     db.collection("products")
       .get()
@@ -95,11 +96,11 @@ function createProduct(fullname, price, urlImg) {
             return null;
           }
 
+          console.log(doc.id, " => ", doc.data());
           return {
             id: querySnapshot.docs[0].id,
             ...querySnapshot.docs[0].data(),            // convert data
           };
-          console.log(doc.id, " => ", doc.data());
         });
 
       })
@@ -109,6 +110,5 @@ function createProduct(fullname, price, urlImg) {
         _noti.error(errorCode, errorMessage);
       });;
   }
-}
 
-export { createUser, getUserByEmail, updateUser, createProduct }
+export { createUser, getUserByEmail, updateUser, createProduct, getProducts }

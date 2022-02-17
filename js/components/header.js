@@ -7,6 +7,7 @@ import HomePage from "../containers/Main/index.js";
 import changeScreen from "../changscreen.js";
 import UserAcountPage from "../containers/UserAcount/index.js";
 import AdminPage from "../containers/admin/index.js";
+import CartPage from "../containers/cart/index.js";
 class Header {
     container;
     bgrImg;
@@ -25,11 +26,12 @@ class Header {
     registerBtn;
     loginBtn;
     discount;
-
+    cartBtn;
 
     registerPage;
     loginPage;
     accountUserPage;
+    cartPage;
 
     app;
     home;
@@ -68,12 +70,14 @@ class Header {
         this.HomePage = new HomePage()
         this.accountUserPage = new UserAcountPage()
         this.adminPage = new AdminPage()
+        this.cartPage = new CartPage()
 
         this.headerNav = document.createElement('div')
         this.headerNav.classList.add('header-nav')
         // this.registerBtn = new SubButton('ti-check', 'Register', this.changeRegisterPage)
         // this.loginBtn = new SubButton('ti-user', 'Login', this.changeLoginPage)
         this.discount = new SubButton('ti-arrow-right', 'Discount')
+        this.cartBtn = new SubButton('ti-shopping-cart','Cart', this.changCartPage)
 
 
 
@@ -134,6 +138,9 @@ class Header {
     changAdPage = () =>{
         changeScreen(this.adminPage)
     }
+    changCartPage = () =>{
+        changeScreen(this.cartPage)
+    }
     Logout = () => {
         localStorage.removeItem('emailLogined')
         this.changHomePage()
@@ -164,7 +171,7 @@ class Header {
     }
 
     render() {
-        this.headerNav.append(this.registerBtn.render(), this.loginBtn.render(), this.discount.render())
+        this.headerNav.append(this.registerBtn.render(), this.loginBtn.render(), this.discount.render(), this.cartBtn.render())
         this.leftMain.append(this.imgLeftMain)
         this.rightMain.append(this.search.render(), this.headerNav, this.headerAbout)
         this.main.append(this.leftMain, this.rightMain)

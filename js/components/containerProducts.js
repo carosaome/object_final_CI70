@@ -1,43 +1,78 @@
-class ContainerProducts{
+import SectionProduct from "./perProducts.js";
+
+// import { getProducts } from "../firebase/store.js";
+import db from "../firebase/index.js";
+
+
+class ContainerProducts {
     container;
 
-    constructor(){
+    containerTitle
+    title
+
+    containerProducts
+
+
+
+    constructor() {
         this.container = document.createElement('div')
         this.container.classList.add('content-main')
-        this.container.innerHTML = `<div class=" about-products row">
-        <span class="text-on-products"> PC GEARVN - MIỄN PHÍ GIAO HÀNG TOÀN QUỐC</span>
-    </div>
-
-    <div id="lists-deal-hot" class="section-deal">
-
-    </div>`
-
-    // <div class=" about-products row">
-    //     <span class="text-on-products"> PC GEARVN - MIỄN PHÍ GIAO HÀNG TOÀN QUỐC</span>
-    // </div>
-
-    // <div id="lists-pc" class="section-deal">
-
-    // </div>
-
-    // <div class=" about-products row">
-    //     <span class="text-on-products">LAPTOP GAMING - MIỄN PHÍ GIAO HÀNG TOÀN QUỐC </span>
-    // </div>
 
 
+        this.containerTitle = document.createElement('div')
+        this.containerTitle.classList.add('about-products', 'row')
+        this.title = document.createElement('span')
+        this.title.classList.add('text-on-products')
+        this.title.innerText = ` PC GEARVN - MIỄN PHÍ GIAO HÀNG TOÀN QUỐC`
 
-    // <div id="lists-laptop" class="section-deal">
 
-    // </div>
-    // <div class=" about-products row">
-    //     <span class="text-on-products">THẾ GIỚI PHỤ KIỆN PC </span>
-    // </div>
-    // <div id="lists-gear" class="section-deal">
+        this.containerProducts = document.createElement('div')
+        this.containerProducts.classList.add('section-deal')
+        this.containerProducts.id = 'lists-deal-hot'
 
-    // </div>
+
+        this.getProducts()
     }
 
-    render(){
+    numberFormat(num){
+        let fmt = new Intl.NumberFormat()
+        return fmt.format(num)
+    }
+
+    getProducts() {
+        db.collection("products")
+            .get()
+            .then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    // doc.data() is never undefined for query doc snapshots
+
+                    if (querySnapshot.docs.length === 0) {
+                        return null;
+                    }
+
+                    const newProduct = new SectionProduct(
+                        doc.data().fullname,
+                        this.numberFormat(doc.data().price) + 'd',
+                        doc.data().urlImg
+                    )
+                    this.containerProducts.append(newProduct.render())
+                    return {
+                        id: querySnapshot.docs[0].id,
+                        ...querySnapshot.docs[0].data(),            // convert data
+                    };
+                });
+
+            })
+            .catch((error) => {
+                let errorCode = error.code;
+                let errorMessage = error.message;
+                _noti.error(errorCode, errorMessage);
+            });;
+    }
+    render() {
+
+        this.containerTitle.append(this.title)
+        this.container.append(this.containerTitle, this.containerProducts)
         return this.container
     }
 }
