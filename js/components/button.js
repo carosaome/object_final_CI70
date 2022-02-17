@@ -4,13 +4,16 @@ class ButtonComponent{
         this.button = document.createElement('button')
         this.button.type = type
         this.button.id = id
-        this.button.classList.add(...className)
+        this.button.classList.add(className)
         this.button.innerText = text
         
 
         if (cb) {
             this.button.addEventListener("click", cb);
           }
+    }
+    render(){
+        return this.button
     }
 }
 

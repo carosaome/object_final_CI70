@@ -2,29 +2,34 @@ import ButtonComponent from "../../components/button.js";
 import InputComponent from "../../components/input.js";
 
 import { checkEmail, checkPassword, checkName, checkPhone } from "../../common/validator.js"
-import { createNewAccout } from "../../firebase/auth.js";
+import { getCurrentUser } from "../../firebase/auth.js";
+import {createUser, getUserByEmail, updateUser} from "../../firebase/store.js"
 
-class RegisterPage {
+class UserAcountPage
+ {
     container;
     h1;
+    userId;
 
     formContainer;
     fullName;
-    email;
+    inputEmail;
     phone;
-    passWord;
+    address;
     confirnPassWord;
     containerBtn;
     btnGo
     btnTurnBack
 
     constructor() {
+        
+
         this.container = document.createElement('div')
         this.container.classList.add('register-main')
 
         this.h1 = document.createElement('h1')
         this.h1.classList.add('register-header')
-        this.h1.innerText = 'Tạo tài khoản'
+        this.h1.innerText = 'Your Ac'
 
         this.formContainer = document.createElement('form')
         this.formContainer.id = 'form-1'
@@ -35,48 +40,68 @@ class RegisterPage {
             'register-input',
             'FullName')
 
-        this.email = new InputComponent('ti-email',
+        const user = localStorage.getItem('emailLogined')
+        
+        console.log(getCurrentUser())
+
+        this.inputEmail = new InputComponent('ti-email',
             'register-email-V',
             'text', 'email',
             'register-input',
             'Email')
 
+        this.inputEmail.setAttribute('value', user)
+        this.inputEmail.setAttribute('disabled', true)
+        
         this.phone = new InputComponent('ti-headphone-alt',
             'register-phoneNumber',
             'text', 'phone',
             'register-input',
             'Phone')
-        this.passWord = new InputComponent('ti-lock',
+        this.address = new InputComponent('ti-lock',
             'register-passWord',
-            'password', 'password',
+            'text', 'address',
             'register-input',
-            'PassWord')
-        this.confirnPassWord = new InputComponent('ti-lock',
-            'register-passWord',
-            'password', 'rePassword',
-            'register-input',
-            'Confirn PassWord')
+            'Address')
+      
 
         this.containerBtn = document.createElement('div')
         this.containerBtn.classList.add('register-button')
-        this.btnGo = new ButtonComponent('', 'btn-register', 'register-button-main', 'Register')
+        this.btnGo = new ButtonComponent('', 'btn-register', 'register-button-main', 'Update')
         this.btnTurnBack = new ButtonComponent('', '', 'register-button-turnBack', 'Turn Back')
+        this.fetchUserByEmail()
     }
 
+    fetchUserByEmail= async()=>{
+        const email = localStorage.getItem('emailLogined')
+       
+        const userStore = await   getUserByEmail(email)
+        if (userStore) {
+            this.userId = userStore.id;
+      
+            this.fullName.setAttribute("value", userStore.fullname);
+            this.phone.setAttribute("value", userStore.phone);
+            this.address.setAttribute("value", userStore.address);
+      
+          } else {
+            this.userId = "";
+          }
+    }
 
     handleSubmit = async (e) => {
         e.preventDefault();
+        const user = localStorage.getItem('emailLogined')
         
-        const { fullname, email, phone, password, rePassword } = e.target;
+        const { fullname, email, phone, address,  } = e.target;
 
 
         let isError = false;
         if (checkEmail(email.value) !== null) {
             // loi
-            this.email.setError(checkEmail(email.value));
+            this.inputEmail.setError(checkEmail(email.value));
             isError = true;
         } else {
-            this.email.setError("");
+            this.inputEmail.setError("");
         }
 
         if (checkName(fullname.value) !== null) {
@@ -87,51 +112,57 @@ class RegisterPage {
         }
 
         if (checkPhone(phone.value) !== null) {
-            this.phone.setError(checkPassword(phone.value));
+            this.phone.setError(checkPhone(phone.value));
             isError = true;
         } else {
             this.phone.setError("");
         }
 
 
-        if (checkPassword(password.value) !== null) {
-            this.passWord.setError(checkPassword(password.value));
+        if (checkName(address.value) !== null) {
+            this.address.setError(checkName(address.value));
             isError = true;
         } else {
-            this.passWord.setError("");
+            this.address.setError("");
         }
 
-        if (checkPassword(rePassword.value) !== null) {
-            this.confirnPassWord.setError(checkPassword(password.value));
-            isError = true;
-        } else if (password.value !== rePassword.value) {
-            this.confirnPassWord.setError("Your re-password is not matching.");
-            isError = true;
-        } else {
-            this.confirnPassWord.setError("");
-        }
-
-
+ 
 
         if(!isError){
-            createNewAccout(email.value, password.value)
+            // createNewAccout(email.value, password.value)
+            console.log(email.value, phone.value, address.value)
 
-            fullname.value = '';
-            email.value=''
-            phone.value=''
-            password.value=''
-            rePassword.value=''
+            // createUser(user, fullname.value, phone.value, address.value)
+            // fullname.value = '';
+            // phone.value=''
+            // address.value=''
         }
         // updateUser(fullname.value,phone.value)
+        if (this.userId) {
+            await updateUser(
+              this.userId,
+              user,
+              fullname.value,
+              phone.value,
+              address.value
+            );
+          } else {
+             createUser(
+              user,
+              fullname.value,
+              phone.value,
+              address.value
+            );
+          }
     }
 
+     
     render() {
         this.containerBtn.append(this.btnGo.render(), this.btnTurnBack.render())
         this.formContainer.append(this.fullName.render(),
-            this.email.render(),
+            this.inputEmail.render(),
             this.phone.render(),
-            this.passWord.render(),
-            this.confirnPassWord.render(),
+            this.address.render(),
             this.containerBtn
         )
 
@@ -142,4 +173,4 @@ class RegisterPage {
 
 }
 
-export default RegisterPage
+export default UserAcountPage

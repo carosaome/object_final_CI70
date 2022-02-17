@@ -89,6 +89,11 @@ html{
 
 .header-nav > a > span {
     margin-left: 5px;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 10ch;
 }
 
 .header-content{
@@ -997,3 +1002,11 @@ th{
     border-width: 1px;
     width: 92%;
 }
+
+.form-message {
+    font-size: 1.2rem;
+    line-height: 1.6rem;
+    padding: 4px 0 0;
+    color: red;
+  }
+  
