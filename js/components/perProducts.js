@@ -15,6 +15,9 @@ class SectionProduct{
     nameProduct
     priceProdcut
 
+    nameOrder
+    priceOder
+    imgOrder
     constructor(name, price, img){
         this.container = document.createElement('div')
         this.container.classList.add('products-sections', 'section')
@@ -33,7 +36,7 @@ class SectionProduct{
         this.a = document.createElement('a')
         this.a.classList.add('font-in-orderbox')
         this.a.innerText = 'Click để xem chi tiết'
-        this.btnOrder = new ButtonComponent('','','btn-in-oderbox','Order','')
+        this.btnOrder = new ButtonComponent('','','btn-in-oderbox','Order',this.handleOrderProduct)
 
         
         this.containerNamePrice = document.createElement('div')
@@ -42,11 +45,22 @@ class SectionProduct{
         this.nameProduct.innerText = name
         this.priceProdcut = document.createElement('p')
         this.priceProdcut.classList.add('price-offical')
-        this.priceProdcut.innerText = price
+        this.priceProdcut.innerText = this.numberFormat(price)
 
-
+        this.nameOrder = name
+        this.priceOder = price
+        this.imgOrder = img
     }
 
+
+    handleOrderProduct=()=>{
+        console.log(this.nameOrder, this.priceOder, this.imgOrder)
+    }
+
+    numberFormat(num){
+        let fmt = new Intl.NumberFormat()
+        return fmt.format(num)
+    }
     render(){
         this.containerNamePrice.append(this.nameProduct, this.priceProdcut)
         this.orderBox.append(this.a, this.btnOrder.render())

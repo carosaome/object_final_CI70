@@ -1,5 +1,5 @@
 import SectionProduct from "./perProducts.js";
-
+import * as _noti from "../common/notify.js"
 // import { getProducts } from "../firebase/store.js";
 import db from "../firebase/index.js";
 
@@ -34,10 +34,10 @@ class ContainerProducts {
         this.getProducts()
     }
 
-    numberFormat(num){
-        let fmt = new Intl.NumberFormat()
-        return fmt.format(num)
-    }
+    // numberFormat(num){
+    //     let fmt = new Intl.NumberFormat()
+    //     return fmt.format(num)
+    // }
 
     getProducts() {
         db.collection("products")
@@ -52,7 +52,7 @@ class ContainerProducts {
 
                     const newProduct = new SectionProduct(
                         doc.data().fullname,
-                        this.numberFormat(doc.data().price) + 'd',
+                        doc.data().price,
                         doc.data().urlImg
                     )
                     this.containerProducts.append(newProduct.render())
