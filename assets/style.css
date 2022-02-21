@@ -1022,6 +1022,7 @@ th{
 }
 
 .cart-item {
+    position: relative;
     display: flex;
     align-items: center;
     margin-bottom: 20px;
@@ -1077,7 +1078,18 @@ th{
 .cart-item-number-text {
     margin: 0 20px;
 }
-
+.cart-item-delete-btn{
+    background-color: #f7452e;
+    border-radius: 5px;
+    border: none;
+    color: #fff;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+    top: 11px;
+}
 .cart-item-number-btn {
     background-color: #f7452e;
     border-radius: 5px;

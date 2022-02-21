@@ -10,7 +10,9 @@ class SubButton {
 
     numProduct;
 
+    check
     constructor(icon, text, cb, num) {
+        this.check = localStorage.getItem('emailLogined')
         this.getProducts()
         this.app = document.getElementById('body')
         this.container = document.createElement('a')
@@ -23,24 +25,37 @@ class SubButton {
         this.text = document.createElement('span')
         this.text.innerText = text
 
-        if (num) {
+        if (num && this.check) {
             this.container.style.position = 'relative'
             this.numProduct = document.createElement('div')
             this.numProduct.classList.add('num-product-cart')
-
             this.container.append(this.numProduct)
         }
 
     }
 
-    getProducts = async() => {
+    getProducts = async () => {
         let emailUser = localStorage.getItem('emailLogined')
-        let num = 0
         const cart = await db.collection("cart")
             .where("userEmail", "==", emailUser)
-            .get()
 
-            this.numProduct.innerText = cart.docs[0].data().items.length
+
+            .onSnapshot((snapshot) => {
+                snapshot.docChanges().forEach((change) => {
+                    if (change.type === "added") {
+                        this.numProduct.innerText = change.doc.data().items.length
+
+
+                    }
+                    if (change.type === "modified") {
+                        this.numProduct.innerText = change.doc.data().items.length
+
+                    }
+                    if (change.type === "removed") {
+                        console.log("Removed : ", change.doc.data());
+                    }
+                });
+            });
     }
 
     render() {

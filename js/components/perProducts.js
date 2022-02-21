@@ -1,6 +1,6 @@
 import { addProductsToCart } from "../firebase/store.js";
 import ButtonComponent from "./button.js";
-
+import * as _noti from "../common/notify.js"
 
 class SectionProduct {
     container;
@@ -80,9 +80,10 @@ class SectionProduct {
     
         let check = localStorage.getItem('emailLogined')
         if(check == null){
-            alert('Vui lòng đăng nhập để mua hàng')
+           _noti.error('OPPS', 'Vui Lòng Đăng Nhập Để Mua Hàng!!!')
         }
         else
+            _noti.success('', 'Sản Phẩm Đã Được Thêm Vào Giở Hàng Thành Công !!')
         addProductsToCart(idCart, name, price, amoutProduct, img, idProduct )
         
     }

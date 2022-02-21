@@ -10,9 +10,13 @@ import AdminPage from "../containers/admin/index.js";
 import CartPage from "../containers/cart/index.js";
 import IconCart from "./iconCart.js";
 import db from "../firebase/index.js";
+
+import * as _noti from "../common/notify.js"
 class Header {
     container;
     bgrImg;
+    containerHeader;
+
     main;
     leftMain;
     imgLeftMain;
@@ -46,11 +50,15 @@ class Header {
 
         this.app = document.getElementById('body')
         this.home = new HomePage()
+        
+        this.containerHeader = document.createElement('div');
+        this.containerHeader.classList.add('container-header')
 
         this.container = document.createElement('div');
         this.container.classList.add('header-main', 'row')
         this.bgrImg = document.createElement('img')
         this.bgrImg.src = '../../assets/images/bn-top4.webp'
+        this.bgrImg.style.width = "100%"
         this.main = document.createElement('div')
         this.main.classList.add('header-content')
 
@@ -79,11 +87,11 @@ class Header {
         this.headerNav.classList.add('header-nav')
         // this.registerBtn = new SubButton('ti-check', 'Register', this.changeRegisterPage)
         // this.loginBtn = new SubButton('ti-user', 'Login', this.changeLoginPage)
-        this.discount = new SubButton('ti-arrow-right', 'Discount')
+        this.discount = new SubButton('ti-arrow-right', 'Khuyến Mãi')
         this.numProductCart = new CartPage()
         this.numProductCart.getProducts()
 
-        this.cartBtn = new SubButton('ti-shopping-cart', 'Cart', this.changCartPage ,'2')
+        this.cartBtn = new SubButton('ti-shopping-cart', 'Giỏ Hàng', this.changCartPage ,'2')
         // this.cartBtn = new IconCart(this.changCartPage)
 
 
@@ -145,7 +153,13 @@ class Header {
         changeScreen(this.adminPage)
     }
     changCartPage = () => {
-        changeScreen(this.cartPage)
+        const check = localStorage.getItem('emailLogined')
+        if(check){
+            changeScreen(this.cartPage)
+        }
+        else{
+            _noti.error('OPPS', "Vui Lòng Đăng Nhập Để Thực Hiện Chức Năng Này!!!")
+        }
     }
     Logout = () => {
         localStorage.removeItem('emailLogined')
@@ -160,13 +174,13 @@ class Header {
         if (email) {
             if (email == 'sieunhankiet@gmail.com') {
                 this.registerBtn = new SubButton('ti-check', 'ADMIN', this.changAdPage)
-                this.loginBtn = new SubButton('ti-user', 'Log Out', this.Logout)
+                this.loginBtn = new SubButton('ti-user', 'Đăng Xuất', this.Logout)
 
             }
             else {
 
                 this.registerBtn = new SubButton('ti-check', email, this.changeAcountUserPage)
-                this.loginBtn = new SubButton('ti-user', 'Log Out', this.Logout)
+                this.loginBtn = new SubButton('ti-user', 'Đăng Xuất', this.Logout)
             }
 
 
@@ -174,7 +188,7 @@ class Header {
         else {
 
             this.registerBtn = new SubButton('ti-check', 'Register', this.changeRegisterPage)
-            this.loginBtn = new SubButton('ti-user', 'Login', this.changeLoginPage)
+            this.loginBtn = new SubButton('ti-user', 'Đăng Nhập', this.changeLoginPage)
         }
 
     }
@@ -184,7 +198,8 @@ class Header {
         this.leftMain.append(this.imgLeftMain)
         this.rightMain.append(this.search.render(), this.headerNav, this.headerAbout)
         this.main.append(this.leftMain, this.rightMain)
-        this.container.append(this.bgrImg, this.main, this.headerMainNav)
+        this.containerHeader.append(this.main, this.headerMainNav)
+        this.container.append(this.bgrImg, this.containerHeader)
 
         return this.container
     }

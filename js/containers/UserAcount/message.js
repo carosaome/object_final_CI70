@@ -9,6 +9,8 @@ class MessageUserPage{
     inputMessage
     btnSendMessage
     title
+
+    check
     constructor(){
         this.container = document.createElement('div')
         this.container.classList.add('div-messsage-user')
@@ -33,23 +35,25 @@ class MessageUserPage{
         this.messages = new MessageItem()
         this.btnSendMessage = new ButtonComponent('','','btn-send-messgage','Send')
         
+        this.check = true
     }
 
+    // let check = true
     openMessage=()=>{
-        let check = false
-
-        if(check){
-            this.container.remove(this.containerMessages)
+        console.log(this.check);
+        if(this.check){
+            this.containerMessages.remove()
+            this.check = false
             
-            check = false
         }
 
         else{
+
             const temp = new Array(20).fill(1).map(()=> new MessageItem().render())
             this.listItems.append(...temp)
             this.containerMessages.append(this.title,this.listItems , this.inputMessage , this.btnSendMessage.render())
             this.container.append(this.containerMessages)
-            check = true
+            this.check = true
         }
         // this.container.remove(this.imgIcon)
       

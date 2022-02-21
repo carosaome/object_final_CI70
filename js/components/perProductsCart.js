@@ -26,6 +26,8 @@ class SectionProductInCart
 
     idProduct
 
+    check
+
     constructor(urlImg,name,price,amout,id) {
 
         this.containerTable = document.createElement('div')
@@ -55,9 +57,11 @@ class SectionProductInCart
         this.sumPrice = document.createElement('p')
         this.sumPrice.classList.add('cart-item-sum-money')
 
-        this.btnDeleteItem = new ButtonComponent('', '', 'cart-item-number-btn', 'x', this.handleDelteItem)
+        this.btnDeleteItem = new ButtonComponent('', '', 'cart-item-delete-btn', 'x', this.handleDelteItem)
 
         this.idProduct = id
+
+        this.check = amout;
     }
     
     numberFormat(num) {
@@ -65,14 +69,21 @@ class SectionProductInCart
         return fmt.format(num)
     }
     handleDelteItem =() =>{
-        console.log(this.idProduct)
         deleteProductInCart(this.idProduct)
     }
     handleAddItem = () =>{
         addProductInCart(this.idProduct)
     }
     handleSubItem = () =>{
-        subProductInCart(this.idProduct)
+        if(this.check <= 1){
+            deleteProductInCart(this.idProduct)
+
+
+        }
+        else{
+
+            subProductInCart(this.idProduct)
+        }
 
     }
     render() {
