@@ -51,9 +51,11 @@ class ContainerProducts {
                     }
 
                     const newProduct = new SectionProduct(
+                        
                         doc.data().fullname,
                         doc.data().price,
-                        doc.data().urlImg
+                        doc.data().urlImg,
+                        doc.data().id
                     )
                     this.containerProducts.append(newProduct.render())
                     return {

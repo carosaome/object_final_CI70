@@ -64,9 +64,12 @@
 }
 .ti-shopping-cart:before {
 	content: "\e60d";
+	font-size: 25px;
+
 }
 .ti-shopping-cart-full:before {
 	content: "\e60e";
+	font-size: 25px;
 }
 .ti-settings:before {
 	content: "\e60f";

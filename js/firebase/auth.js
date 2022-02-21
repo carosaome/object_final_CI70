@@ -1,4 +1,5 @@
 import * as _noti from "../common/notify.js"
+import { getUserByEmail } from "./store.js";
 
 const config = {
   url: "http://127.0.0.1:5501/index.html",
@@ -33,8 +34,10 @@ const loginWithEmailPass = async (email, password) => {
       // Signed in
 
       let user = userCredential.user;
-      console.log(user.displayName, user.phoneNumber)
+      
       localStorage.setItem('emailLogined', user.email)
+      let emailUser=getUserByEmail(user.email)
+      localStorage.setItem('idCart', emailUser)
       localStorage.setItem('uid', user.uid)
       
       _noti.success('Sucess','Login succesfully')

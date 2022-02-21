@@ -78,7 +78,8 @@ class UserAcountPage
         const userStore = await   getUserByEmail(email)
         if (userStore) {
             this.userId = userStore.id;
-      
+            localStorage.setItem('idCart', this.userId)
+            console.log(this.userId)
             this.fullName.setAttribute("value", userStore.fullname);
             this.phone.setAttribute("value", userStore.phone);
             this.address.setAttribute("value", userStore.address);

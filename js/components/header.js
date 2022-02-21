@@ -8,6 +8,8 @@ import changeScreen from "../changscreen.js";
 import UserAcountPage from "../containers/UserAcount/index.js";
 import AdminPage from "../containers/admin/index.js";
 import CartPage from "../containers/cart/index.js";
+import IconCart from "./iconCart.js";
+import db from "../firebase/index.js";
 class Header {
     container;
     bgrImg;
@@ -32,6 +34,7 @@ class Header {
     loginPage;
     accountUserPage;
     cartPage;
+    numProductCart;
 
     app;
     home;
@@ -39,7 +42,7 @@ class Header {
 
     constructor() {
         this.changeActiveLogin()
-
+        // this.test()
 
         this.app = document.getElementById('body')
         this.home = new HomePage()
@@ -77,8 +80,11 @@ class Header {
         // this.registerBtn = new SubButton('ti-check', 'Register', this.changeRegisterPage)
         // this.loginBtn = new SubButton('ti-user', 'Login', this.changeLoginPage)
         this.discount = new SubButton('ti-arrow-right', 'Discount')
-        this.cartBtn = new SubButton('ti-shopping-cart','Cart', this.changCartPage)
+        this.numProductCart = new CartPage()
+        this.numProductCart.getProducts()
 
+        this.cartBtn = new SubButton('ti-shopping-cart', 'Cart', this.changCartPage ,'2')
+        // this.cartBtn = new IconCart(this.changCartPage)
 
 
         this.headerAbout = document.createElement('ul')
@@ -135,16 +141,19 @@ class Header {
     changeLoginPage = () => {
         changeScreen(this.loginPage)
     }
-    changAdPage = () =>{
+    changAdPage = () => {
         changeScreen(this.adminPage)
     }
-    changCartPage = () =>{
+    changCartPage = () => {
         changeScreen(this.cartPage)
     }
     Logout = () => {
         localStorage.removeItem('emailLogined')
+        localStorage.removeItem('idCart')
         this.changHomePage()
     }
+
+
 
     changeActiveLogin() {
         let email = localStorage.getItem('emailLogined')
